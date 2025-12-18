@@ -1,0 +1,52 @@
+apply plugin: "com.android.application"
+apply plugin: "com.facebook.react"
+
+// ... (other build configurations)
+
+android {
+    compileSdkVersion 33 // Updated from 31
+    namespace "com.gpucameraapp"
+
+    defaultConfig {
+        applicationId "com.gpucameraapp"
+        minSdkVersion 24 // Updated for C++ and OpenCV support
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+        
+        // ADD THIS SECTION (For configuring the native C++ build)
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++14"
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+        
+        // ADD THIS TOO (For limiting APK size)
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a"
+        }
+    }
+    
+    // ADD THIS ENTIRE SECTION (For pointing to the native C++ build file)
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.18.1"
+        }
+    }
+    
+    // ... rest of the android configuration (e.g., signing configs)
+}
+
+// ... (other configurations)
+
+dependencies {
+    // The main React Native dependencies are usually here
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    
+    // ADD OPENCV (If using prebuilt library)
+    implementation 'org.opencv:opencv-android:4.8.0' 
+    
+    // ... existing dependencies ...
+}

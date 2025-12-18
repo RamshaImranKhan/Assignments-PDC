@@ -1,0 +1,12 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        // ... existing repos ...
+        
+        // ADD THIS
+        maven {
+            url 'https://maven.google.com'
+        }
+    }
+}
